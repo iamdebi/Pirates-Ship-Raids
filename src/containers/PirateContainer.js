@@ -4,6 +4,7 @@ import PirateList from "../components/pirates/PirateList";
 import PirateDetail from "../components/pirates/PirateDetail";
 import Request from "../helpers/request";
 import PirateCreateForm from "../components/pirates/PirateCreateForm";
+import PirateEditForm from "../components/pirates/PirateEditForm";
 
 class PirateContainer extends Component {
   constructor(props) {
@@ -48,6 +49,13 @@ class PirateContainer extends Component {
       .then(() => (window.location = "/pirates"));
   }
 
+  handleUpdate(pirate, id) {
+    const request = new Request();
+    request.patch("/api/pirates/" + id, pirate).then(() => {
+      window.location = "/pirates/" + id;
+    });
+  }
+
   render() {
     if (!this.state.pirates) {
       return null;
@@ -68,11 +76,30 @@ class PirateContainer extends Component {
                   />
                 );
               }}
-            ></Route>
+            />
+
+            <Route
+              exact
+              path="/pirates/:id/edit"
+              render={props => {
+                const id = props.match.params.id;
+                const pirate = this.findPirateById(id);
+                return (
+                  <PirateEditForm
+                    pirate={pirate}
+                    ships={this.state.ships}
+                    raids={this.state.raids}
+                    onUpdate={this.handleUpdate}
+                  />
+                );
+              }}
+            />
+
             <Route
               exact
               path="/pirates/:id"
               render={props => {
+                console.log(props);
                 const id = props.match.params.id;
                 const pirate = this.findPirateById(id);
                 return (

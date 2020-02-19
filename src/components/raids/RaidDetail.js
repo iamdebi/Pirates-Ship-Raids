@@ -1,6 +1,5 @@
 import React from "react";
 import Raid from "./Raid";
-import Ship from "../ships/Ship";
 
 const RaidDeatil = props => {
   if (!props.raid) {
